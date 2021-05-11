@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     Vector3 velocity;
     Rigidbody myRigidbody;
-    // Start is called before the first frame update
+    
     void Start()
     {
         myRigidbody = GetComponent<Rigidbody>();
@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     public void LookAt(Vector3 lookPoint)
     {
         Vector3 heightCorrectedPoint = new Vector3(lookPoint.x, transform.position.y, lookPoint.z);
-        transform.LookAt(lookPoint);
+        transform.LookAt(heightCorrectedPoint);
     }
 
     public void FixedUpdate()
