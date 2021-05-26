@@ -39,13 +39,13 @@ public class Enemy : LivingEntity
 
     void Update()
     {
-        if (timeBetweenAttacks.time > nextAttackTime)
+        if (Time.time > nextAttackTime)
         {
             float sqrDstToTarget = (target.position - transform.position).sqrMagnitude;
 
             if (sqrDstToTarget < Mathf.Pow(attackDistanceThreshold +myCollisionRadius + targetCollisionRadius, 2))
             {
-                nextAttackTime = timeBetweenAttacks.time + tmeBetweenAttacks;
+                nextAttackTime = Time.time + timeBetweenAttacks;
                 StartCoroutine(Attack());
             }
         }
@@ -56,14 +56,14 @@ public class Enemy : LivingEntity
         currentState = State.Attacking;
         pathfinder.enabled = false;
 
-        Vector3 = dirToTarget = (target.position - transform.position).normalized;
+        Vector3 dirToTarget = (target.position - transform.position).normalized;
         Vector3 attackPosition = target.position - dirToTarget * (myCollisionRadius + targetCollisionRadius);
         Vector3 originalPosition = transform.position;
 
         float percent = 0;
         float attackSpeed = 3;
 
-        skinMaterial.color = Color.purple;
+        skinMaterial.color = Color.blue;
 
         while(percent <=1)
         {
@@ -74,6 +74,7 @@ public class Enemy : LivingEntity
             yield return null;
         }
 
+        skinMaterial.color = originalColour;
         currentState = State.Chasing;
         pathfinder.enabled = true;
     }
@@ -84,13 +85,13 @@ public class Enemy : LivingEntity
 
         while (target != null)
         {
-            if (currentState = State.Chasing)
+            if (currentState == State.Chasing)
             {
-                Vector3 = dirToTarget = (target.position - transform.position).normalized;
+                Vector3 dirToTarget = (target.position - transform.position).normalized;
                 Vector3 targetPosition = target.position - dirToTarget * (myCollisionRadius + targetCollisionRadius + attackDistanceThreshold/2);
                 if (!dead)
                 {
-                    pathfinder.SetDestination(target.position);
+                    pathfinder.SetDestination(targetPosition);
                 }
             }
             yield return new WaitForSeconds(refreshRate);
